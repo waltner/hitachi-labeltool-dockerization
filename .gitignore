@@ -1,0 +1,5 @@
+*.swp
+.env
+mongod.log
+mongodb-local/
+semantic-segmentation-editor-test

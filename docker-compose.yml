@@ -1,0 +1,23 @@
+version: '3.2'
+
+services:
+
+  labeltool-docker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+
+    volumes:
+      - ./docker_data/input_img:/home/node/app/input_img/
+      - ./docker_data/output_img:/home/node/app/output_img/
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      - METEOR_ALLOW_SUPERUSER=true # needed to run as root within docker, otherwise build will fail
+      - MONGO_URL=mongodb://user:password@labeltool-db-host:27017/labeltool-local?authSource=admin # create user first, see README.md
+
+    extra_hosts:
+      - "labeltool-db-host:172.17.0.1" # docker0 entry in ifconfig/ip addr (`ip addr | grep docker`)
