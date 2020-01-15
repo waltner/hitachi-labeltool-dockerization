@@ -11,7 +11,9 @@ Two files are needed to run the labeltool with Docker:
 - `docker-compose.yml`: This file contains the configuration of the Labeltool-Docker with an external MongoDB.
 
 Copy the templates into the labeltool directory:
-`cp Dockerfile docker-compose.yml $LABELTOOL_DIR`
+``` bash
+cp Dockerfile docker-compose.yml $LABELTOOL_DIR
+```
 
 ## Setup local MongoDB instance
 **1) Edit configuration in mongod.conf**
@@ -24,8 +26,10 @@ Main parameters:
 
 **2) Start MongoDB instance with local conf**
 
-If the DB directory as defined in the `mongod.conf` does not exist, create it with e.g. `mkdir mongodb-local`!
-`/usr/bin/mongod --config mongod.conf &`
+If the DB directory as defined in the `mongod.conf` does not exist, create it with e.g. `mkdir mongodb-local`! Then start the MongoDB instance with
+``` bash
+/usr/bin/mongod --config mongod.conf &
+```
 
 **3) add user to local db ([official manual](https://docs.mongodb.com/manual/tutorial/enable-authentication/#create-the-user-administrator))**
 
