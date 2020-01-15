@@ -11,12 +11,11 @@ Two files are needed to run the labeltool with Docker:
 - `docker-compose.yml`: This file contains the configuration of the Labeltool-Docker with an external MongoDB.
 
 Copy the templates into the labeltool directory:
-``` bash
-cp Dockerfile docker-compose.yml $LABELTOOL_DIR
-```
+`cp Dockerfile docker-compose.yml $LABELTOOL_DIR`
 
 ## Setup local MongoDB instance
 **1) Edit configuration in mongod.conf**
+
 Main parameters:
 -  `storage.dbPath`: local MongoDB storage path
 -  `systemLog.path`: local logging path to check if everything runs fine (e.g. use `tail -f mongod.log`)
@@ -24,15 +23,15 @@ Main parameters:
 -  `security.authorization`: set this to `enabled` for authentication with user/password
 
 **2) Start MongoDB instance with local conf**
+
 If the DB directory as defined in the `mongod.conf` does not exist, create it with e.g. `mkdir mongodb-local`!
-``` bash
-/usr/bin/mongod --config mongod.conf &
-```
+`/usr/bin/mongod --config mongod.conf &`
 
 **3) add user to local db ([official manual](https://docs.mongodb.com/manual/tutorial/enable-authentication/#create-the-user-administrator))**
-Choose credentials as you like, but alter the `MONGO_URL` entry in `$LABELTOOL_DIR/docker-compose.yml` accordingly.
+
+Choose credentials as you like, but alter the `MONGO_URL` entry in `$LABELTOOL_DIR/docker-compose.yml` accordingly. Start the `/usr/bin/mongo` binary and create the user.
 ``` bash
-mongo
+/usr/bin/mongo
 use admin;
 db.createUser(
 {
@@ -44,6 +43,7 @@ roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
 exit;
 ```
 **4) Restart MongoDB instance with local conf**
+
 Kill and restart `mongod` (find process with `ps aux | grep /usr/bin/mongod`). Make sure, authenticaton is enabled in `mongod.conf`:
 ```
 security:
@@ -79,4 +79,12 @@ mongoimport -v --db labeltool-local --collection SseSamples --file sample.json -
 Make sure the db name ist the same as defined in your `MONGO_URL` (in `$LABELTOOL_DIR/docker-compose.yml`) and the credentials match your user!
 
 ## Start labeltool
-Run the command `docker-compose -f $LABELTOOL_DIR/docker-compose.yml up` to build and start the docker. If you need to change anything and changes do not reflect it might help to rebuild with `docker-compose -f $LABELTOOL_DIR/docker-compose.yml up --build --force-recreate`. Please be patient, builds take quite some time (around 5-10min on my PC).
+Run the command
+```bash
+docker-compose -f $LABELTOOL_DIR/docker-compose.yml up
+```
+to build and start the docker. If you need to change anything and changes do not reflect it might help to rebuild with
+``` bash
+docker-compose -f $LABELTOOL_DIR/docker-compose.yml up --build --force-recreate
+```
+Please be patient, builds take quite some time (around 5-10min on my PC).
